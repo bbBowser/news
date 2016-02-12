@@ -9,7 +9,6 @@ module.exports = function (config) {
         // base path that will be used to resolve all patterns
         // (eg. files, exclude)
         basePath: '',
-
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine'],
@@ -24,14 +23,39 @@ module.exports = function (config) {
             'vendor/angular-mocks/angular-mocks.js',
             'vendor/angular-route/angular-route.js',
             'vendor/angular-sanitize/angular-sanitize.js',
-            'tests/unit/stubs/App.js',
-            'tests/unit/stubs/OC.js',
-            'controller/**/*.js',
-            'filter/**/*.js',
-            'service/**/*.js',
-            'directive/**/*.js',
+            'tests/unit/stubs/App.ts',
+            'tests/unit/stubs/OC.ts',
+            'controller/**/*.ts',
+            'filter/**/*.ts',
+            'service/**/*.ts',
+            'directive/**/*.ts',
             'tests/unit/**/*Spec.js',
         ],
+
+        preprocessors: {
+            '**/*.ts': ['typescript']
+        },
+        typescriptPreprocessor: {
+            // options passed to the typescript compiler
+            options: {
+                sourceMap: false,
+                target: 'ES5',
+                noImplicitAny: false,
+                removeComments: true,
+                concatenateOutput: false,
+                sortOutput: true
+            },
+            // extra typing definitions to pass to the compiler (globs allowed)
+            typings: [
+                'typings/browser.d.ts',
+                'typings/owncloud.d.ts'
+            ],
+            // transforming the filenames
+            transformPath: function(path) {
+                return path.replace(/\.ts$/, '.js');
+            }
+        },
+
 
 
         // list of files to exclude

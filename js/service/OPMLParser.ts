@@ -10,7 +10,7 @@
 app.service('OPMLParser', function () {
     'use strict';
 
-    var parseOutline = function (outline) {
+    var parseOutline = function (outline): any {
         var url = outline.attr('xmlUrl') || outline.attr('htmlUrl');
         var name = outline.attr('title') || outline.attr('text') || url;
 

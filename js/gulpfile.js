@@ -18,33 +18,29 @@ const gulp = require('gulp'),
     KarmaServer = require('karma').Server,
     phpunit = require('gulp-phpunit'),
     concat = require('gulp-concat'),
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    tsc = require('gulp-typescript'),
+    tsconfig = require('./tsconfig.json');
 
 // Configuration
+const sources = tsconfig.filesGlob;
 const buildTarget = 'app.min.js';
 const phpunitConfig = __dirname + '/../phpunit.xml';
 const karmaConfig = __dirname + '/karma.conf.js';
 const destinationFolder = __dirname + '/build/';
-const sources = [
-    'app/App.js', 'app/Config.js', 'app/Run.js',
-    'controller/**/*.js',
-    'filter/**/*.js',
-    'service/**/*.js',
-    'gui/**/*.js',
-    'plugin/**/*.js',
-    'utility/**/*.js',
-    'directive/**/*.js'
-];
 const testSources = ['tests/**/*.js'];
 const phpSources = ['../**/*.php', '!../js/**', '!../vendor/**'];
-const watchSources = sources.concat(testSources).concat(['*.js']);
+const watchSources = testSources.concat(['*.js']);
 const lintSources = watchSources;
 
 // tasks
 gulp.task('default', ['lint'], () => {
     return gulp.src(sources)
-        .pipe(ngAnnotate())
         .pipe(sourcemaps.init())
+        .pipe(tsc(tsconfig.compilerOptions))
+        .pipe(ngAnnotate({
+            gulpWarnings: false  // temporary fix
+        }))
         .pipe(concat(buildTarget))
         .pipe(uglify())
         .pipe(sourcemaps.write())

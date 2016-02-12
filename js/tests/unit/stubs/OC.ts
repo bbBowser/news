@@ -7,7 +7,7 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @copyright Bernhard Posselt 2012, 2014
  */
-window.OC = {
+var OC = {
     generateUrl: function (url) {
         'use strict';
 

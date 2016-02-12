@@ -15,4 +15,3 @@ window.News = window.News || {};
     };
 
 })(window, document, jQuery, window.News);
-
